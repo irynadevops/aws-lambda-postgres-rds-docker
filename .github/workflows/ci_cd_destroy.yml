@@ -1,0 +1,42 @@
+name: Destroying infrastructure LambdaContainer-RDSPostgres-VPC
+
+on: 
+  workflow_dispatch:
+
+jobs:
+  Destroy:
+    name: Destroyment infrastructure and My App from AWS
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: eu-west-1
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+      - name: cdk synth
+        uses: scottbrenner/aws-cdk-action@master
+        with:
+          args: synth --app "python3 app.py"
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }} #Required
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }} #Required
+          SECRET_KEY: ${{ secrets.SECRET_KEY }}
+      - name: cdk destroy
+        uses: youyo/aws-cdk-github-actions@v2
+        with:
+          cdk_subcommand: ' destroy'
+          cdk_args: '--require-approval never'
+          actions_comment: false
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }} #Required
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }} #Required
+          SECRET_KEY: ${{ secrets.SECRET_KEY }}
+
+
+

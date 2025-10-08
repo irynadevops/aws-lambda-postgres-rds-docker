@@ -1,0 +1,19 @@
+version: '3'
+services:
+  db:
+    image: postgres:13.6
+    environment:
+      - POSTGRES_PASSWORD="add your passwd"
+      - POSTGRES_DB=my_db
+    ports:
+      - "5432:5432"
+  app:
+    build: .
+    environment:
+      SECRET_KEY: "add your key"
+      DB_PASSWORD: "add your passwd"
+      DB_HOST: db
+    depends_on:
+      - db
+    ports:
+      - "8000:8000"
