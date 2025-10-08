@@ -1,0 +1,36 @@
+[tool.poetry]
+name = "my-app"
+version = "0.1.0"
+description = "Scalable My app"
+authors = ["Iryna Zaitsava"]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+fastapi = "^0.75.0"
+uvicorn = {extras = ["standard"], version = "^0.17.6"}
+SQLAlchemy = {extras = ["asyncio"], version = "^1.4.32"}
+python-jose = {extras = ["cryptography"], version = "^3.3.0"}
+passlib = {extras = ["bcrypt"], version = "^1.7.4"}
+asyncpg = "^0.25.0"
+greenlet = "^1.1.2"
+python-multipart = "^0.0.5"
+
+[tool.poetry.dev-dependencies]
+black = "^22.1.0"
+isort = "^5.10.1"
+pre-commit = "^2.17.0"
+flake8 = "^4.0.1"
+testcontainers = "^3.4.2"
+
+[tool.isort]
+profile = "black"
+line_length = 120
+known_first_party = ["my", "tests"]
+
+[tool.black]
+line-length = 120
+preview = true
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
